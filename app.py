@@ -94,7 +94,7 @@ def list_product():
     cur.execute("select * from products")
     rows = cur.fetchall()
     
-    conn.clsoe()
+    conn.close()
     return ren("list.html", rows=rows, role=session["role"])
 
 @app.route("/insert", methods=['GET','POST'])
