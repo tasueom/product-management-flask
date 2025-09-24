@@ -1,0 +1,30 @@
+{% extends "layout.html" %}
+
+{% block title %}
+상품 목록
+{% endblock %}
+
+{% block content %}
+<h2>상품 목록</h2>
+{% if role == "admin" %}
+<table>
+    <tr>
+        <th>품번</th><th>품명</th><th>수량</th><th>재고</th><th>설명</th><th>관리</th>
+    </tr>
+    {% for row in rows %}
+    <tr>
+        <td>{{row[0]}}</td>
+        <td>{{row[1]}}</td>
+        <td>{{row[2]}}</td>
+        <td>{{row[3]}}</td>
+        <td>
+            <textarea name = "description" rows="3" cols="10">{{row[4]}}</textarea>
+        </td>
+        <td>
+            <a href="{{url_for('update', pid=row[0])}}">수정</a>
+            <a href="{{url_for('delete', pid=row[0])}}">삭제</a>
+        </td>
+    </tr>
+</table>
+{% endif %}
+{% endblock %}
