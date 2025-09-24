@@ -129,7 +129,7 @@ def update(pid):
                     name = ?,
                     price = ?,
                     stock = ?,
-                    description
+                    description = ?
                     where pid = ?
                     """,(name, price, stock, description, pid))
         conn.commit()
