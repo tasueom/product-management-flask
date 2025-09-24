@@ -6,7 +6,7 @@
 
 {% block content %}
 <h2>상품 수정</h2>
-<form method="POST" action="{{url_for('update', pid=product[0])}}">
+<form method="POST" action="{{url_for('update', pid=product[0])}}" onsubmit="return checkProduct(this)">
     <label>이름 <input type="text" name="name" value="{{product[1]}}"></label><br>
     <label>가격 <input type="text" name="price" value="{{product[2]}}"></label><br>
     <label>재고 <input type="text" name="stock" value="{{product[3]}}"></label><br>

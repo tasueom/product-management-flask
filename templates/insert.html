@@ -6,7 +6,7 @@
 
 {% block content %}
 <h2>상품 등록</h2>
-<form method="POST" action="{{url_for('insert')}}">
+<form method="POST" action="{{url_for('insert')}}" onsubmit="return checkProduct(this)">
     <label>이름 <input type="text" name="name"></label><br>
     <label>가격 <input type="text" name="price"></label><br>
     <label>재고 <input type="text" name="stock"></label><br>
