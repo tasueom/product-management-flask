@@ -32,7 +32,7 @@
 {% if role == "user" %}
 <table>
     <tr>
-        <th>품번</th><th>품명</th><th>가격</th><th>재고</th><th>설명</th>
+        <th>품번</th><th>품명</th><th>가격</th><th>재고</th><th>설명</th><th>담기</th>
     </tr>
     {% for row in rows %}
     <tr>
@@ -42,6 +42,9 @@
         <td>{{row[3]}}</td>
         <td>
             <textarea name = "description" rows="3" cols="30">{{row[4]}}</textarea>
+        </td>
+        <td>
+            <a href="{{url_for('add_to_cart')}}">장바구니에 담기</a>
         </td>
     </tr>
     {% endfor %}
