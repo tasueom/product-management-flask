@@ -30,6 +30,10 @@ def init_db():
 def index():
     return ren("index.html", user = session.get("user"), role=session.get("role"))
 
+@app.route("/signup", methods=['GET','POST'])
+def signup():
+    return ren("signup.html")
+
 def conn_db():
     conn = sqlite3.connect("product-management-flask/database.db")
     cur = conn.cursor()
