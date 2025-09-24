@@ -166,7 +166,18 @@ def delete(pid):
     return redirect(url_for("list_product"))
 
 @app.route("/cart")
-        
+def cart():
+    username = session.get("user")
+    
+    conn, cur = conn_db()
+    
+    cur.execute("select pid, name, price, amount, tot from cart where username=?",
+                (username,))
+    rows = cur.fetchall()
+    
+    conn.close()
+    
+    return ren("cart.html", rows=rows, user = session.get("user"), role=session.get("role"))
 
 def conn_db():
     conn = sqlite3.connect("database.db")
