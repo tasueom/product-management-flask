@@ -10,7 +10,7 @@ def init_db():
     cur.execute("""
                 create table if not exists users(
                     uid integer primary key autoincrement,
-                    username text not null,
+                    username text not null unique,
                     email text not null,
                     password text not null,
                     role text not null default 'user'
