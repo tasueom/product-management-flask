@@ -1,0 +1,23 @@
+{% extends "layout.html" %}
+
+{% block title %}
+장바구니
+{% endblock %}
+
+{% block content %}
+<h2>{{user}}님의 장바구니</h2>
+<table>
+    <tr>
+        <th>품번</th><th>품명</th><th>가격</th><th>수량</th><th>총액</th>
+    </tr>
+    {% for row in rows %}
+    <tr>
+        <td>{{row[0]}}</td>
+        <td>{{row[1]}}</td>
+        <td>{{row[2]}}</td>
+        <td>{{row[3]}}</td>
+        <td>{{row[4]}}</td>
+    </tr>
+    {% endfor %}
+</table>
+{% endblock %}
