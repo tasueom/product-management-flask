@@ -25,6 +25,7 @@
             <a href="{{url_for('delete', pid=row[0])}}">삭제</a>
         </td>
     </tr>
+    {% endfor %}
 </table>
 {% endif %}
 
@@ -43,6 +44,7 @@
             <textarea name = "description" rows="3" cols="10">{{row[4]}}</textarea>
         </td>
     </tr>
+    {% endfor %}
 </table>
 {% endif %}
 
