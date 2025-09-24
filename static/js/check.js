@@ -35,8 +35,8 @@ function checkProduct(f) {
     }
 
     // 재고: 숫자, 1 이상
-    if (isNaN(stock) || Number(stock) < 1) {
-        alert("재고는 1 이상의 숫자로 입력하세요.");
+    if (isNaN(stock) || Number(stock) < 0) {
+        alert("재고는 0 이상의 숫자로 입력하세요.");
         f.stock.focus();
         return false;
     }
