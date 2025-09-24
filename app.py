@@ -108,6 +108,7 @@ def insert():
         conn.close()
         
         return redirect(url_for("list"))
+    return ren("insert.html")
 
 def conn_db():
     conn = sqlite3.connect("product-management-flask/database.db")
