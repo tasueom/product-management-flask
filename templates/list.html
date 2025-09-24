@@ -9,7 +9,7 @@
 {% if role == "admin" %}
 <table>
     <tr>
-        <th>품번</th><th>품명</th><th>수량</th><th>재고</th><th>설명</th><th>관리</th>
+        <th>품번</th><th>품명</th><th>가격</th><th>재고</th><th>설명</th><th>관리</th>
     </tr>
     {% for row in rows %}
     <tr>
@@ -32,7 +32,7 @@
 {% if role == "user" %}
 <table>
     <tr>
-        <th>품번</th><th>품명</th><th>수량</th><th>재고</th><th>설명</th>
+        <th>품번</th><th>품명</th><th>가격</th><th>재고</th><th>설명</th>
     </tr>
     {% for row in rows %}
     <tr>
