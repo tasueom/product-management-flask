@@ -234,6 +234,28 @@ def cart():
     
     return ren("cart.html", rows=rows, user = session.get("user"), role=session.get("role"), sum_tot=sum_tot)
 
+@app.route("/purchase")
+def purchase():
+    username = session.get("user")
+    conn, cur = conn_db()
+
+    cur.execute("""
+        select pid, sum(amount)
+        from cart
+        where username = ?
+        group by pid
+    """, (username,))
+    rows = cur.fetchall()
+
+    for pid, cnt in rows:
+        cur.execute("update products set stock = stock - ? where pid = ?", (cnt, pid))
+
+    cur.execute("delete from cart where username = ?", (username,))
+    conn.commit()
+    conn.close()
+    
+    return ren("cart.html", user = session.get("user"), role=session.get("role"), msg="구매 성공")
+
 if __name__ == "__main__":
     init_db()
     app.run(debug=True)

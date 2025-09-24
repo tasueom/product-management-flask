@@ -21,4 +21,10 @@
     {% endfor %}
 </table>
 <h4>총액: {{ 0 if sum_tot is none else sum_tot }}원</h4>
+<form action="{{ url_for('purchase') }}" method="get">
+    <button type="submit">구매하기</button>
+</form>
+{% if msg %}
+<p class="noti">{{msg}}</p>
+{% endif %}
 {% endblock %}
