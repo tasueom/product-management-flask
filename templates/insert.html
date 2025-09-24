@@ -7,9 +7,9 @@
 {% block content %}
 <h2>상품 등록</h2>
 <form method="POST" action="{{url_for('insert')}}" onsubmit="return checkProduct(this)">
-    <label>이름 <input type="text" name="name"></label><br>
-    <label>가격 <input type="text" name="price"></label><br>
-    <label>재고 <input type="text" name="stock"></label><br>
+    <label>이름 <input type="text" name="name" required></label><br>
+    <label>가격 <input type="text" name="price" required></label><br>
+    <label>재고 <input type="text" name="stock" required></label><br>
     <label for="description">설명</label><br>
     <textarea id="description" name = "description" rows="3" cols="30"></textarea><br>
     <button type="submit">등록</button>
