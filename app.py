@@ -110,6 +110,29 @@ def insert():
         return redirect(url_for("list"))
     return ren("insert.html")
 
+@app.route("/update/<int:pid>", methods=['GET','POST'])
+def update(pid):
+    if request.method=="POST":
+        name = request.form["name"]
+        price = int(request.form["price"])
+        stock = int(request.form["stock"])
+        description = request.form["description"]
+        
+        conn, cur = conn_db()
+        
+        cur.execute("""
+                    update products set
+                    name = ?,
+                    price = ?,
+                    stock = ?,
+                    description
+                    where pid = ?
+                    """,(name, price, stock, description, pid))
+        conn.commit()
+        conn.close()
+        return redirect(url_for("list"))
+        
+
 def conn_db():
     conn = sqlite3.connect("product-management-flask/database.db")
     cur = conn.cursor()
