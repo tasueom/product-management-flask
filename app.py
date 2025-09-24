@@ -75,6 +75,11 @@ def signin():
     
     return ren("login.html")
 
+@app.route("/signout")
+def signout():
+    session.clear()
+    return redirect(url_for("index"))
+
 @app.route("/list")
 def list_product():
     if "user" not in session:
