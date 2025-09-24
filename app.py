@@ -25,6 +25,15 @@ def init_db():
                     description text
                 )
                 """)
+    cur.execute("""
+                create table if not exists cart(
+                    pid integer not null unique,
+                    name text not null,
+                    price integer not null,
+                    amount integer not null,
+                    tot integer not null
+                )
+                """)
     conn.commit()
     conn.close()
     
