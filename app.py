@@ -38,7 +38,7 @@ def init_db():
                     name text not null,
                     price integer not null,
                     amount integer not null,
-                    tot integer not null
+                    tot integer not null,
                     unique(username, pid)
                 )
                 """)
