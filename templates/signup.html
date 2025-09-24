@@ -5,6 +5,7 @@
 {% endblock %}
 
 {% block content %}
+<h2>회원 가입</h2>
 <form method="POST" action="{{url_for('signup')}}">
     <label>이름<input type="text" name="username"></label>
     <label>이메일<input type="email" name="email"></label>
