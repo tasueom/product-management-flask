@@ -214,9 +214,12 @@ def cart():
                 (username,))
     rows = cur.fetchall()
     
+    cur.execute("select sum(tot) from cart where username=?",(username,))
+    sum_tot = cur.fetchone()[0]
+    
     conn.close()
     
-    return ren("cart.html", rows=rows, user = session.get("user"), role=session.get("role"))
+    return ren("cart.html", rows=rows, user = session.get("user"), role=session.get("role"), sum_tot=sum_tot)
 
 if __name__ == "__main__":
     init_db()
