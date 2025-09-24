@@ -65,7 +65,7 @@ def signin():
         hashed_pw = hashlib.sha256(password.encode()).hexdigest()
         
         conn, cur = conn_db()
-        cur.execute("select id, username, role from users where username=? and password = ?",
+        cur.execute("select uid, username, role from users where username=? and password = ?",
                     (username, hashed_pw))
         user = cur.fetchone()
         conn.close
