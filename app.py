@@ -165,6 +165,39 @@ def delete(pid):
     
     return redirect(url_for("list_product"))
 
+@app.route("/add_to_cart/<int:pid>")
+def add_to_cart(pid):
+    username = session.get("user")
+    
+    conn, cur = conn_db()
+    
+    cur.execute("select * from cart where pid=? and username=?",(pid,username))
+    result = cur.fetchone()
+    
+    if result:
+        cur.execute("""
+                    update cart set
+                    amount = amount+1
+                    tot = price * (amount+1)
+                    where pid=? and username=?
+                    """,(pid,username))
+    else:
+        cur.execute("select name, price from products")
+        name = cur.fetchone()[0]
+        price = cur.fetchone()[0]
+        
+        cur.execute("""insert into cart(username, pid, name, price, amount, tot)
+                    values(?, ?, ?, ?, ?, ?)""",
+                    (username, pid, name, price, 1, price))
+        
+    cur.execute("select * from products")
+    rows = cur.fetchall()
+    
+    conn.commit()
+    conn.close()
+    
+    return ren("list.html", rows=rows, user = session.get("user"), role=session["role"], msg="상품이 장바구니에 담겼습니다.")
+
 @app.route("/cart")
 def cart():
     username = session.get("user")
