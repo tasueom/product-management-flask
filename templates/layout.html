@@ -18,6 +18,9 @@
         {% if role == "admin" %}
         <a href="{{url_for('insert')}}">상품 등록</a>
         {% endif %}
+        {% if role == "user" %}
+        <a href="{{url_for('cart')}}">장바구니</a>
+        {% endif %}
 
         <div class="nav-right">
             {% if not user %}
