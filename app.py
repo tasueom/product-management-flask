@@ -45,9 +45,13 @@ def signup():
         cnt = cur.fetchone()[0]
         role = "admin" if cnt == 0 else "user"
         
-        cur.execute("insert into users(username, email, password, role values(?, ?, ?, ?))",
-                    (username, email, hashed_pw, role))
-        conn.commit()
+        try:
+            cur.execute("insert into users(username, email, password, role values(?, ?, ?, ?))",
+                        (username, email, hashed_pw, role))
+            conn.commit()
+        except sqlite3.IntegrityError:
+            conn.close()
+            return ren("signup.html",err = "이미 존재하는 이름입니다.")
         conn.close()
         return redirect(url_for("signin"))
     
