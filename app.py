@@ -93,6 +93,22 @@ def list_product():
     conn.clsoe()
     return ren("list.html", rows=rows, role=session["role"])
 
+@app.route("/insert", methods=['GET','POST'])
+def insert():
+    if request.method == "POST":
+        name = request.form["name"]
+        price = int(request.form["price"])
+        stock = int(request.form["stock"])
+        description = request.form["description"]
+        
+        conn, cur = conn_db()
+        cur.execute("insert into products(name, price, stock, description)",(name,price,stock,description))
+        
+        conn.commit()
+        conn.close()
+        
+        return redirect(url_for("list"))
+
 def conn_db():
     conn = sqlite3.connect("product-management-flask/database.db")
     cur = conn.cursor()
