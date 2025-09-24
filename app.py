@@ -112,7 +112,7 @@ def insert():
         conn.close()
         
         return redirect(url_for("list"))
-    return ren("insert.html")
+    return ren("insert.html", role=session.get("role"))
 
 @app.route("/update/<int:pid>", methods=['GET','POST'])
 def update(pid):
@@ -143,7 +143,7 @@ def update(pid):
     
     conn.close()
     
-    return ren("update.html", product = product)
+    return ren("update.html", product = product, role=session.get("role"))
 
 @app.route("/delete/<int:pid>")
 def delete(pid):
