@@ -153,7 +153,7 @@ def delete(pid):
         
 
 def conn_db():
-    conn = sqlite3.connect("product-management-flask/database.db")
+    conn = sqlite3.connect("database.db")
     cur = conn.cursor()
     
     return conn, cur
