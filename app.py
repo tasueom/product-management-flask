@@ -95,7 +95,7 @@ def list_product():
     rows = cur.fetchall()
     
     conn.close()
-    return ren("list.html", rows=rows, role=session["role"])
+    return ren("list.html", rows=rows, user = session.get("user"), role=session["role"])
 
 @app.route("/insert", methods=['GET','POST'])
 def insert():
@@ -112,7 +112,7 @@ def insert():
         conn.close()
         
         return redirect(url_for("list_product"))
-    return ren("insert.html", role=session.get("role"))
+    return ren("insert.html", user = session.get("user"), role=session.get("role"))
 
 @app.route("/update/<int:pid>", methods=['GET','POST'])
 def update(pid):
@@ -143,7 +143,7 @@ def update(pid):
     
     conn.close()
     
-    return ren("update.html", product = product, role=session.get("role"))
+    return ren("update.html", product = product, user = session.get("user"), role=session.get("role"))
 
 @app.route("/delete/<int:pid>")
 def delete(pid):
