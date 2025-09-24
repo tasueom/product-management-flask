@@ -14,6 +14,9 @@
         {% endif %}
         <a href="{{url_for('list_product')}}">상품 목록</a>
         {% if user %}
+        {% if role == "admin" %}
+        <a href="{{url_for('insert')}}">상품 등록</a>
+        {% endif %}
         <a href="{{url_for('signout')}}">로그아웃</a>
         {% endif %}
     </div>
