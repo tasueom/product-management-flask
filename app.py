@@ -32,6 +32,23 @@ def index():
 
 @app.route("/signup", methods=['GET','POST'])
 def signup():
+    if request.method=="POST":
+        username = request.form["username"]
+        email = request.form["email"]
+        password = request.form["password"]
+        hashed_pw = hashlib.sha256(password.encode()).hexdigest()
+        
+        conn, cur = conn_db()
+        cur.execute("select count(*) from users")
+        cnt = cur.fetchone()[0]
+        role = "admin" if cnt == 0 else "user"
+        
+        cur.execute("insert into users(username, email, password, role values(?, ?, ?, ?))",
+                    (username, email, hashed_pw, role))
+        conn.commit()
+        conn.close()
+        return redirect(url_for("signin"))
+    
     return ren("signup.html")
 
 def conn_db():
