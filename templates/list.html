@@ -44,7 +44,7 @@
             <textarea name = "description" rows="3" cols="30">{{row[4]}}</textarea>
         </td>
         <td>
-            <a href="{{url_for('add_to_cart'),pid=row[0]}}">장바구니에 담기</a>
+            <a href="{{url_for('add_to_cart',pid=row[0])}}">장바구니에 담기</a>
         </td>
     </tr>
     {% endfor %}
