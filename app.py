@@ -27,6 +27,7 @@ def init_db():
                 """)
     cur.execute("""
                 create table if not exists cart(
+                    username text not null,
                     pid integer not null unique,
                     name text not null,
                     price integer not null,
@@ -163,6 +164,8 @@ def delete(pid):
     conn.close()
     
     return redirect(url_for("list_product"))
+
+@app.route("/cart")
         
 
 def conn_db():
