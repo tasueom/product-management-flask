@@ -5,6 +5,12 @@ import hashlib
 app = Flask(__name__)
 app.secret_key = "secret_key_123"
 
+def conn_db():
+    conn = sqlite3.connect("database.db")
+    cur = conn.cursor()
+    
+    return conn, cur
+
 def init_db():
     conn, cur = conn_db()
     cur.execute("""
@@ -105,7 +111,7 @@ def list_product():
     rows = cur.fetchall()
     
     conn.close()
-    return ren("list.html", rows=rows, user = session.get("user"), role=session["role"])
+    return ren("list.html", rows=rows, user = session.get("user"), role=session.get("role"))
 
 @app.route("/insert", methods=['GET','POST'])
 def insert():
@@ -183,8 +189,7 @@ def add_to_cart(pid):
                     """,(pid,username))
     else:
         cur.execute("select name, price from products")
-        name = cur.fetchone()[0]
-        price = cur.fetchone()[0]
+        name, price = cur.fetchone()
         
         cur.execute("""insert into cart(username, pid, name, price, amount, tot)
                     values(?, ?, ?, ?, ?, ?)""",
@@ -196,7 +201,7 @@ def add_to_cart(pid):
     conn.commit()
     conn.close()
     
-    return ren("list.html", rows=rows, user = session.get("user"), role=session["role"], msg="상품이 장바구니에 담겼습니다.")
+    return ren("list.html", rows=rows, user = session.get("user"), role=session.get("role"), msg="상품이 장바구니에 담겼습니다.")
 
 @app.route("/cart")
 def cart():
@@ -211,12 +216,6 @@ def cart():
     conn.close()
     
     return ren("cart.html", rows=rows, user = session.get("user"), role=session.get("role"))
-
-def conn_db():
-    conn = sqlite3.connect("database.db")
-    cur = conn.cursor()
-    
-    return conn, cur
 
 if __name__ == "__main__":
     init_db()
