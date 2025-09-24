@@ -53,6 +53,27 @@ def signup():
     
     return ren("signup.html")
 
+@app.route("/signin", methods=['GET','POST'])
+def signin():
+    if request.method == 'POST':
+        username = request.form["username"]
+        password = request.form["password"]
+        hashed_pw = hashlib.sha256(password.encode()).hexdigest()
+        
+        conn, cur = conn_db()
+        cur.execute("select id, username, role from users where username=? and password = ?",
+                    (username, hashed_pw))
+        user = cur.fetchone()
+        conn.close
+        
+        if user:
+            session["user"] = user[1]
+            session["role"] = user[2]
+            return redirect(url_for("index"))
+        else:
+            return ren("signin.html", err="로그인 실패. 아이디 혹은 비밀번호를 확인하세요.")
+    
+
 def conn_db():
     conn = sqlite3.connect("product-management-flask/database.db")
     cur = conn.cursor()
