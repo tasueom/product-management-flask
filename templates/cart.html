@@ -20,5 +20,5 @@
     </tr>
     {% endfor %}
 </table>
-<h4>총액: {{sum_tot}}원</h4>
+<h4>총액: {{ 0 if sum_tot is none else sum_tot }}원</h4>
 {% endblock %}
