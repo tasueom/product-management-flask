@@ -77,7 +77,7 @@ def signin():
         else:
             return ren("signin.html", err="로그인 실패. 아이디 혹은 비밀번호를 확인하세요.")
     
-    return ren("login.html")
+    return ren("signin.html")
 
 @app.route("/signout")
 def signout():
