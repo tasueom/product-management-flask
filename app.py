@@ -25,6 +25,8 @@ def init_db():
                     description text
                 )
                 """)
+    conn.commit()
+    conn.close()
     
 @app.route("/")
 def index():
