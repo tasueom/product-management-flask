@@ -178,23 +178,36 @@ def add_to_cart(pid):
     
     conn, cur = conn_db()
     
-    cur.execute("select * from cart where pid=? and username=?",(pid,username))
-    result = cur.fetchone()
+    cur.execute("select stock from products where pid=?",(pid,))
+    stock = cur.fetchone()[0]
     
-    if result:
-        cur.execute("""
-                    update cart set
-                    amount = amount+1,
-                    tot = price * (amount+1)
-                    where pid=? and username=?
-                    """,(pid,username))
-    else:
-        cur.execute("select name, price from products where pid=?",(pid,))
-        name, price = cur.fetchone()
+    if stock < 1:
+        cur.execute("select * from products")
+        rows = cur.fetchall()
+    
+        conn.commit()
+        conn.close()
+    
+        return ren("list.html", rows=rows, user = session.get("user"), role=session.get("role"), msg="재고가 부족합니다.")
         
-        cur.execute("""insert into cart(username, pid, name, price, amount, tot)
-                    values(?, ?, ?, ?, ?, ?)""",
-                    (username, pid, name, price, 1, price))
+    else:    
+        cur.execute("select * from cart where pid=? and username=?",(pid,username))
+        result = cur.fetchone()
+    
+        if result:
+            cur.execute("""
+                        update cart set
+                        amount = amount+1,
+                        tot = price * (amount+1)
+                        where pid=? and username=?
+                        """,(pid,username))
+        else:
+            cur.execute("select name, price from products where pid=?",(pid,))
+            name, price = cur.fetchone()
+        
+            cur.execute("""insert into cart(username, pid, name, price, amount, tot)
+                        values(?, ?, ?, ?, ?, ?)""",
+                        (username, pid, name, price, 1, price))
         
     cur.execute("select * from products")
     rows = cur.fetchall()
