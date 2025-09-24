@@ -131,6 +131,15 @@ def update(pid):
         conn.commit()
         conn.close()
         return redirect(url_for("list"))
+    
+    conn, cur = conn_db()
+    
+    cur.execute("select * from products where pid = ?",(pid,))
+    product = cur.fetchone()
+    
+    conn.close()
+    
+    return ren("update.html", product = product)
         
 
 def conn_db():
