@@ -46,7 +46,7 @@ def signup():
         role = "admin" if cnt == 0 else "user"
         
         try:
-            cur.execute("insert into users(username, email, password, role) values(?, ?, ?, ?))",
+            cur.execute("insert into users(username, email, password, role) values(?, ?, ?, ?)",
                         (username, email, hashed_pw, role))
             conn.commit()
         except sqlite3.IntegrityError:
