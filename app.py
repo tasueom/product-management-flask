@@ -184,7 +184,7 @@ def add_to_cart(pid):
     if result:
         cur.execute("""
                     update cart set
-                    amount = amount+1
+                    amount = amount+1,
                     tot = price * (amount+1)
                     where pid=? and username=?
                     """,(pid,username))
