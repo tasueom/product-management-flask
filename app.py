@@ -106,12 +106,12 @@ def insert():
         description = request.form["description"]
         
         conn, cur = conn_db()
-        cur.execute("insert into products(name, price, stock, description)",(name,price,stock,description))
+        cur.execute("insert into products(name, price, stock, description) values (?, ?, ?, ?)",(name,price,stock,description))
         
         conn.commit()
         conn.close()
         
-        return redirect(url_for("list"))
+        return redirect(url_for("list_product"))
     return ren("insert.html", role=session.get("role"))
 
 @app.route("/update/<int:pid>", methods=['GET','POST'])
@@ -134,7 +134,7 @@ def update(pid):
                     """,(name, price, stock, description, pid))
         conn.commit()
         conn.close()
-        return redirect(url_for("list"))
+        return redirect(url_for("list_product"))
     
     conn, cur = conn_db()
     
@@ -153,7 +153,7 @@ def delete(pid):
     conn.commit()
     conn.close()
     
-    return redirect(url_for("list"))
+    return redirect(url_for("list_product"))
         
 
 def conn_db():
