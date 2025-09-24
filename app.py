@@ -34,11 +34,12 @@ def init_db():
     cur.execute("""
                 create table if not exists cart(
                     username text not null,
-                    pid integer not null unique,
+                    pid integer not null,
                     name text not null,
                     price integer not null,
                     amount integer not null,
                     tot integer not null
+                    unique(username, pid)
                 )
                 """)
     conn.commit()
@@ -188,7 +189,7 @@ def add_to_cart(pid):
                     where pid=? and username=?
                     """,(pid,username))
     else:
-        cur.execute("select name, price from products")
+        cur.execute("select name, price from products where pid=?",(pid,))
         name, price = cur.fetchone()
         
         cur.execute("""insert into cart(username, pid, name, price, amount, tot)
