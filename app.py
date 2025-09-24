@@ -140,6 +140,16 @@ def update(pid):
     conn.close()
     
     return ren("update.html", product = product)
+
+@app.route("/delete/<int:pid>")
+def delete(pid):
+    conn, cur = conn_db()
+    
+    cur.execute("delete from products where pid = ?",(pid,))
+    conn.commit()
+    conn.close()
+    
+    return redirect(url_for("list"))
         
 
 def conn_db():
