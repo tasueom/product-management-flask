@@ -75,6 +75,19 @@ def signin():
     
     return ren("login.html")
 
+@app.route("/list")
+def list_product():
+    if "user" not in session:
+        return redirect(url_for("signin"))
+    
+    conn, cur = conn_db()
+    
+    cur.execute("select * from products")
+    rows = cur.fetchall()
+    
+    conn.clsoe()
+    return ren("list.html", rows=rows, role=session["role"])
+
 def conn_db():
     conn = sqlite3.connect("product-management-flask/database.db")
     cur = conn.cursor()
