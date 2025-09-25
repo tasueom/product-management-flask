@@ -267,7 +267,7 @@ def purchase():
     conn.commit()
     conn.close()
     
-    return ren("cart.html", user = session.get("user"), role=session.get("role"), msg="구매 성공")
+    return ren("cart.html", user = session.get("user"), role=session.get("role"), msg="구매 성공", sum_tot=0)
 
 @app.route("/my_info")
 def my_info():
