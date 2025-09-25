@@ -5,9 +5,12 @@
 {% endblock %}
 
 {% block content %}
-<form>
+<form method="post" action="{{url_for('update_user')}}" onsubmit="return checkUser(this)">
     <label>이름 <input type="text" name="username" required value="{{info[0]}}"></label><br>
     <label>이메일 <input type="email" name="email" required value="{{info[1]}}"></label><br>
     <button type="submit">회원 정보 수정</button>
+    {% if msg %}
+    <p class="noti">{{msg}}</p>
+    {% endif %}
 </form>
 {% endblock %}

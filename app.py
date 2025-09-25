@@ -85,9 +85,10 @@ def signin():
         cur.execute("select uid, username, role from users where username=? and password = ?",
                     (username, hashed_pw))
         user = cur.fetchone()
-        conn.close
+        conn.close()
         
         if user:
+            session["uid"] = user[0]
             session["user"] = user[1]
             session["role"] = user[2]
             return redirect(url_for("index"))
@@ -258,16 +259,48 @@ def purchase():
 
 @app.route("/my_info")
 def my_info():
-    username = session.get("user")
+    uid = session.get("uid")
     
     conn, cur = conn_db()
     
-    cur.execute("select username, email from users where username=?",(username,))
+    cur.execute("select username, email, uid from users where uid=?",(uid,))
     info = cur.fetchone()
     
     conn.close()
     
-    return ren("my_info.html", user=username, role=session.get("role"), info=info)
+    return ren("my_info.html", user=session.get("user"), role=session.get("role"), info=info)
+
+@app.route("/update_user", methods=['POST'])
+def update_user():
+    uid = session.get("uid")
+    username=request.form["username"]
+    email=request.form["email"]
+    
+    conn, cur = conn_db()
+    
+    try:
+        cur.execute("update users set username=?, email=? where uid=?",(username, email, uid))
+        conn.commit()
+        session["user"] = username
+    except sqlite3.IntegrityError:
+            cur.execute("select username, email from users where uid=?", (uid,))
+            info = cur.fetchone()
+            conn.close()
+            return ren("my_info.html",
+                    user=session.get("user"),
+                    role=session.get("role"),
+                    info=info,
+                    uid=uid,
+                    msg="이미 존재하는 이름입니다.")
+    cur.execute("select username, email from users where uid=?", (uid,))
+    info = cur.fetchone()
+    conn.close()
+    return ren("my_info.html",
+                    user=session.get("user"),
+                    role=session.get("role"),
+                    info=info,
+                    uid=uid,
+                    msg="회원 정보가 수정되었습니다.")
 
 if __name__ == "__main__":
     init_db()
