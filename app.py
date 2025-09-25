@@ -256,6 +256,19 @@ def purchase():
     
     return ren("cart.html", user = session.get("user"), role=session.get("role"), msg="구매 성공")
 
+@app.route("/my_info")
+def my_info():
+    username = session.get("user")
+    
+    conn, cur = conn_db()
+    
+    cur.execute("select username, email from users where username=?",(username,))
+    info = cur.fetchone()
+    
+    conn.close()
+    
+    return ren("my_info.html", user=username, role=session.get("role"), info=info)
+
 if __name__ == "__main__":
     init_db()
     app.run(debug=True)
