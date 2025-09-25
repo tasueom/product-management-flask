@@ -33,13 +33,13 @@ def init_db():
                 """)
     cur.execute("""
                 create table if not exists cart(
-                    username text not null,
+                    uid integer not null,
                     pid integer not null,
                     name text not null,
                     price integer not null,
                     amount integer not null,
                     tot integer not null,
-                    unique(username, pid)
+                    unique(uid, pid)
                 )
                 """)
     conn.commit()
@@ -175,7 +175,7 @@ def delete(pid):
 
 @app.route("/add_to_cart/<int:pid>")
 def add_to_cart(pid):
-    username = session.get("user")
+    uid = session.get("uid")
     
     conn, cur = conn_db()
     
@@ -192,7 +192,7 @@ def add_to_cart(pid):
         return ren("list.html", rows=rows, user = session.get("user"), role=session.get("role"), msg="재고가 부족합니다.")
         
     else:    
-        cur.execute("select * from cart where pid=? and username=?",(pid,username))
+        cur.execute("select * from cart where pid=? and uid=?",(pid,uid))
         result = cur.fetchone()
     
         if result:
@@ -200,15 +200,15 @@ def add_to_cart(pid):
                         update cart set
                         amount = amount+1,
                         tot = price * (amount+1)
-                        where pid=? and username=?
-                        """,(pid,username))
+                        where pid=? and uid=?
+                        """,(pid,uid))
         else:
             cur.execute("select name, price from products where pid=?",(pid,))
             name, price = cur.fetchone()
         
-            cur.execute("""insert into cart(username, pid, name, price, amount, tot)
+            cur.execute("""insert into cart(uid, pid, name, price, amount, tot)
                         values(?, ?, ?, ?, ?, ?)""",
-                        (username, pid, name, price, 1, price))
+                        (uid, pid, name, price, 1, price))
         
     cur.execute("select * from products")
     rows = cur.fetchall()
@@ -220,15 +220,15 @@ def add_to_cart(pid):
 
 @app.route("/cart")
 def cart():
-    username = session.get("user")
+    uid = session.get("uid")
     
     conn, cur = conn_db()
     
-    cur.execute("select pid, name, price, amount, tot from cart where username=?",
-                (username,))
+    cur.execute("select pid, name, price, amount, tot from cart where uid=?",
+                (uid,))
     rows = cur.fetchall()
     
-    cur.execute("select sum(tot) from cart where username=?",(username,))
+    cur.execute("select sum(tot) from cart where uid=?",(uid,))
     sum_tot = cur.fetchone()[0]
     
     conn.close()
@@ -237,10 +237,10 @@ def cart():
 
 @app.route("/delete_from_cart/<int:pid>")
 def delete_from_cart(pid):
-    username = session.get("user")
+    uid = session.get("uid")
     
     conn, cur = conn_db()
-    cur.execute("delete from cart where username=? and pid=?",(username,pid))
+    cur.execute("delete from cart where uid=? and pid=?",(uid,pid))
     
     conn.commit()
     conn.close()
@@ -249,21 +249,21 @@ def delete_from_cart(pid):
 
 @app.route("/purchase")
 def purchase():
-    username = session.get("user")
+    uid = session.get("uid")
     conn, cur = conn_db()
 
     cur.execute("""
         select pid, sum(amount)
         from cart
-        where username = ?
+        where uid = ?
         group by pid
-    """, (username,))
+    """, (uid,))
     rows = cur.fetchall()
 
     for pid, cnt in rows:
         cur.execute("update products set stock = stock - ? where pid = ?", (cnt, pid))
 
-    cur.execute("delete from cart where username = ?", (username,))
+    cur.execute("delete from cart where uid = ?", (uid,))
     conn.commit()
     conn.close()
     
