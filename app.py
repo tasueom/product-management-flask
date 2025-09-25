@@ -235,6 +235,18 @@ def cart():
     
     return ren("cart.html", rows=rows, user = session.get("user"), role=session.get("role"), sum_tot=sum_tot)
 
+@app.route("/delete_from_cart/<int:pid>")
+def delete_from_cart(pid):
+    username = session.get("user")
+    
+    conn, cur = conn_db()
+    cur.execute("delete from cart where username=? and pid=?",(username,pid))
+    
+    conn.commit()
+    conn.close()
+    
+    return redirect(url_for("cart"))
+
 @app.route("/purchase")
 def purchase():
     username = session.get("user")

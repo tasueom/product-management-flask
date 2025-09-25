@@ -8,7 +8,7 @@
 <h2>{{user}}님의 장바구니</h2>
 <table>
     <tr>
-        <th>품번</th><th>품명</th><th>가격</th><th>수량</th><th>총액</th>
+        <th>품번</th><th>품명</th><th>가격</th><th>수량</th><th>총액</th><th>삭제</th>
     </tr>
     {% for row in rows %}
     <tr>
@@ -17,6 +17,9 @@
         <td>{{row[2]}}</td>
         <td>{{row[3]}}</td>
         <td>{{row[4]}}</td>
+        <td>
+            <a href="{{url_for('delete_from_cart',pid = row[0])}}">삭제</a>
+        </td>
     </tr>
     {% endfor %}
 </table>
