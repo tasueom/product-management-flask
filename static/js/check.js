@@ -2,13 +2,14 @@ function checkUser(f) {
     const username = f.username.value.trim();
     const email = f.email.value.trim();
 
-    // 이름: 한글, 영문, 공백만 허용
-    const nameRegex = /^[가-힣a-zA-Z\s]+$/;
+    // 이름: 한글, 영문, 숫자, 공백 허용
+    const nameRegex = /^[가-힣a-zA-Z0-9\s]+$/;
     if (!nameRegex.test(username)) {
-        alert("이름은 한글, 영문, 공백만 입력 가능합니다.");
+        alert("이름은 한글, 영문, 숫자, 공백만 입력 가능합니다.");
         f.username.focus();
         return false;
     }
+
 
     // 이메일: 입력되었다면 형식 검사
     if (email !== "") {
