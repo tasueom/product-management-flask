@@ -302,7 +302,6 @@ def update_user():
                     user=session.get("user"),
                     role=session.get("role"),
                     info=info,
-                    uid=uid,
                     msg="이미 존재하는 이름입니다.")
     cur.execute("select username, email from users where uid=?", (uid,))
     info = cur.fetchone()
@@ -311,7 +310,6 @@ def update_user():
                     user=session.get("user"),
                     role=session.get("role"),
                     info=info,
-                    uid=uid,
                     msg="회원 정보가 수정되었습니다.")
 
 if __name__ == "__main__":
