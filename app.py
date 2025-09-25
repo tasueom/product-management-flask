@@ -186,8 +186,7 @@ def add_to_cart(pid):
     if stock < 1:
         cur.execute("select * from products")
         rows = cur.fetchall()
-    
-        conn.commit()
+        
         conn.close()
     
         return ren("list.html", rows=rows, user = session.get("user"), role=session.get("role"), msg="재고가 부족합니다.")
