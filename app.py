@@ -168,6 +168,7 @@ def delete(pid):
     conn, cur = conn_db()
     
     cur.execute("delete from products where pid = ?",(pid,))
+    cur.execute("delete from cart where pid = ?", (pid,))
     conn.commit()
     conn.close()
     
